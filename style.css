@@ -583,7 +583,7 @@ body.dark-theme .job-entry-strip:hover {
     display: flex;
     align-items: center;
     margin-bottom: 5px; /* Adjusted margin */
-    border-bottom: 1px solid var(--light-border); /* Separator */
+    border-bottom: 0px solid var(--light-border); /* Separator */
     padding-bottom: 5px; /* Adjusted padding */
 }
 
@@ -902,7 +902,12 @@ body.dark-theme @keyframes highlightNewEntry {
         flex-direction: row;
         align-items: center;
         margin-bottom: 5px;
+        border-bottom: 1px solid var(--light-border); /* Separator for tablet */
         padding-bottom: 5px;
+    }
+
+    body.dark-theme .strip-top-row {
+        border-bottom: 1px solid var(--dark-border);
     }
 
     .strip-serial-no {
@@ -914,10 +919,11 @@ body.dark-theme @keyframes highlightNewEntry {
 
     .strip-title {
         font-size: 1.05em; /* Slightly smaller title font */
+        margin-bottom: 0; /* No margin here for tablet, as it's part of strip-top-row */
     }
 
     .strip-action-buttons {
-        position: absolute;
+        position: absolute; /* Keep absolute for tablet */
         top: 10px;
         right: 10px;
         gap: 5px;
@@ -967,12 +973,13 @@ body.dark-theme @keyframes highlightNewEntry {
 /* Mobile View (for screens smaller than 768px) */
 @media (max-width: 768px) {
     header {
-        flex-direction: row; /* Changed to row for header elements to stay in one line */
+        flex-direction: row; /* Keep header elements in a row */
         justify-content: space-between; /* Space out logo and actions */
         align-items: center;
         padding: 10px;
         flex-wrap: nowrap; /* Prevent wrapping */
-        overflow-x: auto; /* Allow horizontal scroll if content is too wide, prefer to avoid */
+        overflow-x: hidden; /* Prevent horizontal scroll for header */
+        gap: 5px; /* Reduce gap in header */
     }
 
     .header-actions {
@@ -984,8 +991,21 @@ body.dark-theme @keyframes highlightNewEntry {
 
     .logo {
         font-size: 1.4em; /* Smaller logo for mobile */
-        flex-shrink: 0; /* Prevent logo from shrinking */
-        margin-right: 10px; /* Space between logo and actions */
+        flex-shrink: 1; /* Allow logo to shrink if needed, but prefer not to */
+        min-width: 80px; /* Ensure logo doesn't become too small */
+        white-space: nowrap; /* Keep logo text in one line */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis if hidden */
+    }
+
+    .header-actions .btn {
+        margin-left: 0; /* Remove extra margin */
+        padding: 8px; /* Adjust button padding */
+        width: 35px; /* Fixed width for icon buttons */
+        height: 35px; /* Fixed height for icon buttons */
+    }
+    .header-actions .btn i {
+        font-size: 1em; /* Adjust icon size */
     }
 
     main {
@@ -1035,10 +1055,11 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .job-entry-strip {
-        padding: 8px 10px; /* Smaller padding for strips */
-        min-height: 50px; /* Slightly smaller min height for strips */
-        /* Changed to column for overall structure, then manage inner rows */
-        flex-direction: column;
+        display: flex;
+        flex-direction: column; /* Main strip is column-based */
+        padding: 10px; /* Adjusted padding for strip */
+        min-height: auto; /* Allow height to adjust */
+        gap: 5px; /* Overall gap between rows within the strip */
     }
 
     /* New structure for strip content on mobile */
@@ -1047,12 +1068,13 @@ body.dark-theme @keyframes highlightNewEntry {
         box-sizing: border-box;
     }
 
-    .strip-top-row { /* This now contains serial and action buttons */
+    /* Row 1: Sr. Number & Edit/Delete Icons */
+    .strip-top-row {
         display: flex;
         justify-content: space-between; /* Space between serial and actions */
         align-items: center;
-        margin-bottom: 5px; /* Space before title */
-        border-bottom: none; /* No border for this row as title is separate */
+        margin-bottom: 0; /* Remove margin here */
+        border-bottom: none; /* No border for this row */
         padding-bottom: 0; /* No padding */
     }
 
@@ -1060,20 +1082,8 @@ body.dark-theme @keyframes highlightNewEntry {
         width: 25px; /* Smaller serial number circle */
         height: 25px;
         font-size: 0.8em;
-        margin-right: 0; /* No margin here, as it's handled by space-between */
+        margin-right: 0; /* No margin here, space-between handles it */
         flex-shrink: 0;
-    }
-
-    .strip-title {
-        font-size: 1em; /* Title in its own line below */
-        font-weight: bold;
-        margin-bottom: 5px; /* Space between title and details */
-        color: var(--primary-color);
-        white-space: normal; /* Allow title to wrap */
-        overflow: visible; /* Show full title */
-        text-overflow: clip; /* Prevent ellipsis */
-        flex-grow: 0; /* Do not grow */
-        width: 100%; /* Full width */
     }
 
     .strip-action-buttons {
@@ -1091,26 +1101,109 @@ body.dark-theme @keyframes highlightNewEntry {
         padding: 4px;
     }
 
-    .strip-bottom-row { /* This is the 3rd row for detail boxes */
+    /* Row 2: Title */
+    .strip-title {
+        font-size: 1em; /* Smaller title font */
+        font-weight: bold;
+        margin-bottom: 5px; /* Space between title and details */
+        color: var(--primary-color);
+        white-space: normal; /* Allow title to wrap */
+        overflow: hidden; /* Hide overflow to prevent breaking layout */
+        text-overflow: ellipsis; /* Add ellipsis if it's too long */
+        display: -webkit-box; /* For multi-line ellipsis */
+        -webkit-line-clamp: 2; /* Limit to 2 lines */
+        -webkit-box-orient: vertical;
+        line-height: 1.3; /* Adjust line height */
+    }
+
+
+    /* Row 3: Square Boxes (ORG in 1st, State & Date in 2nd) */
+    .strip-bottom-row {
         display: flex;
-        flex-wrap: wrap; /* Allow wrapping */
-        gap: 5px; /* Smaller gap between detail boxes */
+        flex-direction: column; /* Stack detail boxes vertically */
+        gap: 5px; /* Gap between rows of detail boxes */
         font-size: 0.8em; /* Smaller font for details */
-        justify-content: flex-start; /* Align details to the start */
         margin-top: 0; /* Remove any previous margin */
     }
 
-    .strip-detail-box {
-        min-width: 45%; /* Approximately two boxes per row */
-        flex: 1 1 45%; /* Allow two items per row, with wrap */
-        max-width: 48%; /* Max width for two columns */
+    /* For specific detail boxes within strip-bottom-row */
+    .strip-bottom-row .strip-detail-box {
+        min-width: unset; /* Remove min-width inherited from desktop */
+        flex: 1 1 100%; /* Each detail box takes full width */
+        margin-bottom: 0px; /* No gap between boxes within a row */
+        display: flex;
+        flex-direction: row; /* Make content of box horizontal */
+        align-items: center;
+        gap: 5px; /* Gap between label and h4 */
     }
 
+    /* Target specific detail boxes by their `data-label` attribute if possible,
+       or by structure if ORG is always first, then State, then Date */
+    .job-entry-strip .strip-detail-box:nth-child(1) { /* Assuming ORG is first */
+        /* This will be the ORG box */
+        order: 1; /* Ensure it's the first in the group */
+    }
+
+    .job-entry-strip .strip-detail-box:nth-child(2) { /* Assuming State is second */
+        /* This will be the STATE box */
+        order: 2; /* Ensure it's second */
+    }
+
+    .job-entry-strip .strip-detail-box:nth-child(3) { /* Assuming Date is third */
+        /* This will be the DATE box */
+        order: 3; /* Ensure it's third */
+    }
+
+    /* To make State and Date appear on the same line,
+       we need to put them in a wrapper div in HTML or
+       use flex-grow effectively. Let's adjust flex on h4. */
     .strip-detail-box h4 {
         padding: 4px 6px; /* Smaller padding for detail h4 */
-        font-size: 0.8em; /* Even smaller text in boxes */
-        min-height: 20px;
-        height: 20px;
+        font-size: 0.85em; /* Adjusted font size */
+        min-height: 25px; /* Keep consistent height */
+        height: 25px;
+        flex-grow: 1; /* Allow h4 to grow */
+        white-space: nowrap; /* Keep text in one line */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis */
+        text-align: left; /* Align text to left in mobile boxes */
+    }
+
+    /* If you want State and Date to be side-by-side,
+       you'd need a div wrapping them or more complex flex.
+       For now, they will stack due to `flex-direction: column` on strip-bottom-row.
+       Let's try to put them side-by-side: */
+    .strip-bottom-row-state-date { /* This class would need to be added in HTML */
+        display: flex;
+        flex-direction: row; /* Arrange State and Date horizontally */
+        gap: 5px; /* Gap between them */
+        width: 100%; /* Take full width */
+    }
+    .strip-bottom-row-state-date .strip-detail-box {
+        flex: 1 1 48%; /* Each takes roughly half width */
+        margin-bottom: 0; /* Remove margin */
+    }
+    /* If HTML structure cannot be changed, the boxes will stack.
+       The current CSS means ORG, then STATE, then DATE, each on its own line.
+       To get State and Date on one line without HTML changes, we can try this: */
+    .strip-bottom-row {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: 5px; /* Gap between boxes */
+        font-size: 0.8em;
+        margin-top: 0;
+    }
+    .strip-bottom-row .strip-detail-box:nth-child(1) { /* ORG */
+        flex: 1 1 100%; /* Full width for ORG */
+        order: 1;
+    }
+    .strip-bottom-row .strip-detail-box:nth-child(2) { /* State */
+        flex: 1 1 48%; /* Half width for State */
+        order: 2;
+    }
+    .strip-bottom-row .strip-detail-box:nth-child(3) { /* Date */
+        flex: 1 1 48%; /* Half width for Date */
+        order: 3;
     }
 
     .action-bar {
