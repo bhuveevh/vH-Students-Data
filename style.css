@@ -198,7 +198,7 @@ main {
 /* Screen Layout */
 .screen {
     width: 100%;
-    max-width: 600px; /* Default max width */
+    max-width: 600px; /* Default max width for forms */
     padding: var(--padding-base) 30px; /* Increased horizontal padding */
     border-radius: var(--border-radius);
     display: none; /* Hidden by default, shown by JS */
@@ -209,7 +209,7 @@ main {
 }
 
 #student-details-screen {
-    max-width: 780px; /* Increased max width by approximately 30% (600 * 1.3) */
+    max-width: 780px; /* Increased max width for student details screen */
 }
 
 .screen.active {
@@ -826,4 +826,160 @@ body.dark-theme @keyframes highlightNewEntry {
     margin-top: 25px;
 }
 
-/* Removed all @media queries to force desktop view on all devices */
+/* Tablet View for devices with max-width 768px */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        font-size: 1.5em; /* Slightly smaller logo on tablet */
+    }
+
+    main {
+        padding: 10px; /* Reduced padding for main content */
+    }
+
+    .screen {
+        padding: 15px; /* Adjust screen padding */
+        max-width: 600px; /* Keep a reasonable max width for tablet view */
+    }
+
+    #student-details-screen {
+        max-width: 700px; /* Adjusted max-width for tablet view of student details */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Smaller headings */
+        margin-bottom: 15px;
+    }
+
+    .button-group {
+        flex-direction: row; /* Keep buttons in a row, allow wrap */
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .button-group .btn {
+        max-width: 48%; /* Allow two buttons per row */
+        flex-grow: 0; /* Don't force them to grow too much */
+        font-size: 0.95em; /* Slightly smaller button text */
+        padding: 10px 20px; /* Smaller button padding */
+    }
+
+    .large-btn {
+        padding: 12px 25px; /* Maintain slightly larger padding for large buttons */
+        font-size: 1em;
+        max-width: 100%; /* Still full width if it's a large button */
+    }
+
+    input,
+    select {
+        padding: 10px 12px; /* Smaller input padding */
+        font-size: 0.95em;
+    }
+
+    .password-display-box {
+        font-size: 1.2em; /* Smaller password display text */
+        padding: 15px;
+    }
+
+    .job-entry-strip {
+        padding: 8px 10px; /* Smaller padding for strips */
+        min-height: 50px; /* Slightly smaller min height for strips */
+    }
+
+    .strip-top-row {
+        flex-direction: row; /* Keep title and serial in a row */
+        align-items: center;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+    }
+
+    .strip-serial-no {
+        width: 25px; /* Smaller serial number circle */
+        height: 25px;
+        font-size: 0.8em;
+        margin-right: 8px; /* Space between number and title */
+        margin-bottom: 0; /* Remove if previously added */
+    }
+
+    .strip-title {
+        font-size: 1em; /* Smaller title font */
+    }
+
+    .strip-action-buttons {
+        position: absolute; /* Keep absolute positioning */
+        top: 8px; /* Adjusted top */
+        right: 8px; /* Adjusted right */
+        display: flex;
+        gap: 5px;
+    }
+
+    .strip-action-buttons .btn {
+        width: 28px; /* Smaller action buttons */
+        height: 28px;
+        font-size: 0.75em;
+        padding: 4px;
+    }
+
+    .strip-bottom-row {
+        gap: 3px; /* Smaller gap between detail boxes */
+        font-size: 0.8em; /* Smaller font for details */
+        justify-content: space-between; /* Distribute items evenly */
+    }
+
+    .strip-detail-box {
+        min-width: 80px; /* Smaller min-width for detail boxes */
+        flex: 1 1 30%; /* Allow 3 items per row on tablet, or adjust as needed for content */
+        max-width: 48%; /* Limit max width for two columns if needed */
+    }
+
+    .strip-detail-box h4 {
+        padding: 4px 6px; /* Smaller padding for detail h4 */
+        font-size: 0.85em;
+        min-height: 20px; /* Adjusted height for detail h4 */
+        height: 20px; /* Adjusted height for detail h4 */
+    }
+
+    .action-bar {
+        flex-direction: row; /* Keep in a row */
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: flex-start;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        width: 90%; /* Wider modal on tablet */
+        max-width: 450px; /* Adjusted max-width for tablet modal */
+        padding: 15px;
+    }
+
+    .close-button {
+        font-size: 24px; /* Smaller close button */
+        top: 8px;
+        right: 12px;
+    }
+
+    .custom-field-group {
+        padding: 8px;
+    }
+    .custom-field-group input {
+        padding: 6px 8px;
+    }
+    .remove-custom-field-btn {
+        font-size: 1em;
+        top: 3px;
+        right: 3px;
+    }
+}
