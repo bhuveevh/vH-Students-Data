@@ -1,0 +1,829 @@
+/* General Styles */
+:root {
+    --light-bg: #f4f7f6;
+    --light-text: #333;
+    --light-card-bg: #ffffff;
+    --light-border: #e0e0e0;
+    --light-input-bg: #fcfcfc;
+    --light-scrollbar-thumb: #bbb;
+    --light-scrollbar-thumb-hover: #999;
+    --light-scrollbar-track: #f1f1f1;
+
+    --dark-bg: #282c36;
+    --dark-text: #e0e0e0;
+    --dark-card-bg: #3c424e;
+    --dark-border: #4a505c;
+    --dark-input-bg: #323640;
+    --dark-scrollbar-thumb: #555;
+    --dark-scrollbar-thumb-hover: #777;
+    --dark-scrollbar-track: #3a3f47;
+
+    --primary-color: #002b47; /* Updated Primary Color */
+    --primary-hover: #003d66; /* Darker shade for hover */
+    --secondary-color: #6c757d; /* Gray */
+    --secondary-hover: #5a6268;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --danger-color: #dc3545;
+    --danger-hover: #c82333;
+
+    --strip-bg-light: #f0f0f0; /* Lighter background for strip in light theme */
+    --strip-hover-light: #e6e6e6; /* Hover background for strip in light theme */
+    --strip-bg-dark: #323640; /* Darker background for strip in dark theme */
+    --strip-hover-dark: #3a3f47; /* Hover background for strip in dark theme */
+
+    --border-radius: 8px;
+    --padding-base: 20px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Light Theme */
+body.light-theme {
+    background-color: var(--light-bg);
+    color: var(--light-text);
+}
+
+body.light-theme .screen {
+    background-color: var(--light-card-bg);
+    border: 1px solid var(--light-border);
+    box-shadow: var(--box-shadow);
+}
+
+body.light-theme header {
+    background-color: var(--light-card-bg);
+    border-bottom: 1px solid var(--light-border);
+}
+
+body.light-theme input,
+body.light-theme select,
+body.light-theme .password-display-box {
+    background-color: var(--light-input-bg);
+    border: 1px solid var(--light-border);
+    color: var(--light-text);
+}
+
+body.light-theme .modal-content {
+    background-color: var(--light-card-bg);
+    border: 1px solid var(--light-border);
+}
+
+body.light-theme .job-entry-strip {
+    background-color: var(--strip-bg-light); /* Changed for light theme */
+    border: 1px solid var(--light-border);
+}
+body.light-theme .job-entry-strip:hover {
+    background-color: var(--strip-hover-light); /* Changed for light theme hover */
+}
+
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+body.dark-theme .screen {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Darker shadow */
+}
+
+body.dark-theme header {
+    background-color: var(--dark-card-bg);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+body.dark-theme .logo,
+body.dark-theme h2 { /* Added h2 for dark theme */
+    color: #3895ff; /* Specific blue for dark theme logo and headings */
+}
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme .password-display-box {
+    background-color: var(--dark-input-bg);
+    border: 1px solid var(--dark-border);
+    color: var(--dark-text);
+}
+
+body.dark-theme .modal-content {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme .job-entry-strip {
+    background-color: var(--strip-bg-dark); /* Changed for dark theme */
+    border: 1px solid var(--dark-border);
+}
+body.dark-theme .job-entry-strip:hover {
+    background-color: var(--strip-hover-dark); /* Changed for dark theme hover */
+}
+
+
+/* Custom Scrollbar Styles */
+/* For Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-scrollbar-track); /* Color of the track */
+    border-radius: 10px;
+}
+
+body.dark-theme ::-webkit-scrollbar-track {
+    background: var(--dark-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--light-scrollbar-thumb); /* Color of the scroll thumb */
+    border-radius: 10px; /* Roundness of the scroll thumb */
+    border: 2px solid var(--light-scrollbar-track); /* Padding around thumb */
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: var(--dark-scrollbar-thumb);
+    border: 2px solid var(--dark-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--light-scrollbar-thumb-hover); /* Color when hover */
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-scrollbar-thumb-hover);
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px var(--padding-base);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.header-actions .btn {
+    margin-left: 10px;
+}
+
+/* Main Content Area */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align at start to prevent excessive vertical centering */
+    padding: var(--padding-base);
+    box-sizing: border-box;
+}
+
+/* Screen Layout */
+.screen {
+    width: 100%;
+    max-width: 600px; /* Default max width */
+    padding: var(--padding-base) 30px; /* Increased horizontal padding */
+    border-radius: var(--border-radius);
+    display: none; /* Hidden by default, shown by JS */
+    flex-direction: column;
+    gap: 20px; /* Space between elements */
+    box-sizing: border-box;
+    animation: fadeIn 0.5s ease-out;
+}
+
+#student-details-screen {
+    max-width: 780px; /* Increased max width by approximately 30% (600 * 1.3) */
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 25px; /* More space below heading */
+    font-size: 1.8em;
+}
+
+/* Forms */
+.app-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+input,
+input::placeholder,
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-ms-input-placeholder,
+input:-moz-placeholder,
+select,
+select::placeholder,
+select::-webkit-input-placeholder,
+select::-moz-placeholder,
+select:-ms-input-placeholder,
+select:-moz-placeholder {
+    color: var(--light-text);
+}
+
+body.dark-theme input,
+body.dark-theme input::placeholder,
+body.dark-theme input::-webkit-input-placeholder,
+body.dark-theme input::-moz-placeholder,
+body.dark-theme input:-ms-input-placeholder,
+body.dark-theme input:-moz-placeholder,
+body.dark-theme select,
+body.dark-theme select::placeholder,
+body.dark-theme select::-webkit-input-placeholder,
+body.dark-theme select::-moz-placeholder,
+body.dark-theme select:-ms-input-placeholder,
+body.dark-theme select:-moz-placeholder {
+    color: var(--dark-text);
+}
+
+input,
+select {
+    padding: 12px 15px; /* Increased padding */
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width */
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: var(--light-input-bg); /* Ensure background color */
+    border: 1px solid var(--light-border); /* Ensure border */
+}
+
+body.dark-theme input,
+body.dark-theme select {
+    background-color: var(--dark-input-bg);
+    border: 1px solid var(--dark-border);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 43, 71, 0.2); /* Adjusted focus glow to new primary color */
+}
+
+/* Custom Field Styles in Modal */
+.custom-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px; /* Space between custom fields */
+    border: 1px solid var(--light-border);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    position: relative;
+}
+
+body.dark-theme .custom-field-group {
+    border: 1px solid var(--dark-border);
+}
+
+.custom-field-group .form-group {
+    margin-bottom: 0; /* Remove extra gap from nested form-group */
+}
+
+.custom-field-group .form-group label {
+    font-size: 0.85em; /* Smaller label for custom fields */
+    margin-bottom: 5px;
+}
+
+.custom-field-group input {
+    padding: 8px 10px; /* Smaller padding for custom field inputs */
+}
+
+.remove-custom-field-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.remove-custom-field-btn:hover {
+    background-color: rgba(var(--danger-color), 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 25px; /* Increased padding */
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.secondary-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary-btn:hover {
+    background-color: var(--secondary-hover);
+}
+
+.success-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.success-btn:hover {
+    background-color: var(--success-hover);
+}
+
+.icon-btn {
+    padding: 10px; /* Smaller padding for icon-only buttons */
+    width: 40px; /* Fixed width for circular effect */
+    height: 40px; /* Fixed height */
+    border-radius: 50%; /* Make it circular */
+}
+
+.icon-btn i {
+    font-size: 1.2em;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.button-group .btn {
+    flex-grow: 1; /* Allow buttons to grow */
+    max-width: 250px; /* Limit max width for flex growth */
+}
+
+.button-group .large-btn { /* Specific rule for large buttons in button-group */
+    max-width: 100%; /* Ensure full width for large buttons */
+}
+
+.large-btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+}
+
+.text-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    transition: color 0.2s;
+}
+
+.text-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* Password Display Box */
+.password-display-box {
+    background-color: var(--light-input-bg); /* Uses input bg color */
+    border: 1px dashed var(--primary-color); /* Dashed border for emphasis */
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+    word-break: break-all; /* Ensure long passwords break */
+}
+
+body.dark-theme .password-display-box {
+    background-color: var(--dark-input-bg);
+}
+
+.warning-text {
+    background-color: rgba(255, 193, 7, 0.1); /* Light yellow background */
+    border: 1px solid #ffc107; /* Yellow border */
+    color: #856404; /* Dark yellow text */
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+body.dark-theme .warning-text {
+    background-color: rgba(255, 193, 7, 0.15);
+    border: 1px solid #ffc107;
+    color: #ffeb3b; /* Brighter yellow for dark mode */
+}
+
+.warning-text i {
+    font-size: 1.2em;
+    color: #ffc107;
+}
+
+/* General message styles for password structure hint */
+.info-message {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background */
+    border: 1px solid #007bff; /* Blue border */
+    color: #0056b3; /* Dark blue text */
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+body.dark-theme .info-message {
+    background-color: rgba(0, 123, 255, 0.2);
+    border: 1px solid #007bff;
+    color: #89c0f0; /* Lighter blue for dark theme */
+}
+
+.info-message p {
+    margin: 5px 0;
+}
+
+.info-message p:first-child {
+    margin-top: 0;
+    font-weight: bold;
+}
+
+.info-message p:last-child {
+    margin-bottom: 0;
+}
+
+.info-message .small-text {
+    font-size: 0.8em;
+    font-style: italic;
+    color: var(--secondary-color);
+}
+body.dark-theme .info-message .small-text {
+    color: #b0b0b0;
+}
+
+
+/* Job Entries Display */
+#job-entries-display-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjusted gap */
+    margin-top: 15px; /* Adjusted margin */
+    max-height: 500px; /* Increased max height for scrollable area */
+    overflow-y: auto; /* Enable scrolling for entries */
+    padding-right: 5px; /* Space for scrollbar */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.no-entries-message {
+    text-align: center;
+    font-style: italic;
+    color: var(--secondary-color);
+    padding: 20px;
+    border: 1px dashed var(--secondary-color);
+    border-radius: var(--border-radius);
+}
+
+.job-entry-strip {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s, box-shadow 0.2s; /* Removed transform */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
+    height: auto; /* Adjust height to content, override any fixed height */
+    min-height: 60px; /* Minimum height for the strip */
+}
+
+/* Removed transform from hover */
+.job-entry-strip:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Slightly more pronounced shadow on hover */
+}
+
+body.dark-theme .job-entry-strip {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .job-entry-strip:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+.strip-top-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px; /* Adjusted margin */
+    border-bottom: 1px solid var(--light-border); /* Separator */
+    padding-bottom: 5px; /* Adjusted padding */
+}
+
+body.dark-theme .strip-top-row {
+    border-bottom: 1px solid var(--dark-border);
+}
+
+
+.strip-serial-no {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 30px; /* Adjusted size */
+    height: 30px; /* Adjusted size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em; /* Adjusted font */
+    font-weight: bold;
+    margin-right: 10px; /* Adjusted space */
+    flex-shrink: 0;
+}
+
+.strip-title {
+    font-weight: bold;
+    font-size: 1.1em; /* Adjusted title size */
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--primary-color); /* Title color */
+}
+
+.strip-bottom-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Adjusted gap */
+    font-size: 0.9em; /* Adjusted font */
+    color: var(--secondary-color);
+}
+
+body.dark-theme .strip-bottom-row {
+    color: #b0b0b0;
+}
+
+.strip-detail-box {
+    display: flex;
+    flex-direction: column;
+    min-width: 100px; /* Adjusted min width */
+    flex: 1 1 auto; /* Allow flexible sizing */
+}
+
+/* Styling for the square separated box values */
+.strip-detail-box h4 {
+    margin: 0; /* Remove default margin */
+    padding: 5px 8px; /* Adjusted padding */
+    background-color: var(--light-input-bg); /* Use input background color */
+    border: 1px solid var(--light-border);
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+    font-weight: normal; /* Override bold */
+    color: var(--light-text);
+    text-align: center; /* Center the text */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25px;
+    height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+body.dark-theme .strip-detail-box h4 {
+    background-color: var(--dark-input-bg);
+    border: 1px solid var(--dark-border);
+    color: var(--dark-text);
+}
+
+
+.status-Applied h4 { background-color: var(--primary-color); color: white; border-color: var(--primary-color);}
+.status-Interview.Scheduled h4 { background-color: #007bff; color: white; border-color: #007bff;}
+.status-Interview.Done h4 { background-color: #6f42c1; color: white; border-color: #6f42c1;}
+.status-Offer.Received h4 { background-color: var(--success-color); color: white; border-color: var(--success-color);}
+.status-Rejected h4 { background-color: var(--danger-color); color: white; border-color: var(--danger-color);}
+.status-Pending h4 { background-color: #ffc107; color: white; border-color: #ffc107;}
+
+/* Dark theme specific status colors for readability */
+body.dark-theme .status-Applied h4 { background-color: var(--primary-hover); color: white; border-color: var(--primary-hover);}
+body.dark-theme .status-Interview.Scheduled h4 { background-color: #0056b3; color: white; border-color: #0056b3;}
+body.dark-theme .status-Interview.Done h4 { background-color: #5a37a1; color: white; border-color: #5a37a1;}
+body.dark-theme .status-Offer.Received h4 { background-color: var(--success-hover); color: white; border-color: var(--success-hover);}
+body.dark-theme .status-Rejected h4 { background-color: var(--danger-hover); color: white; border-color: var(--danger-hover);}
+body.dark-theme .status-Pending h4 { background-color: #e0a800; color: white; border-color: #e0a800;}
+
+
+.strip-action-buttons {
+    position: absolute;
+    top: 10px; /* Adjusted top */
+    right: 10px; /* Adjusted right */
+    display: flex;
+    gap: 5px; /* Adjusted gap */
+    opacity: 1; /* Always visible */
+}
+
+
+.strip-action-buttons .btn {
+    padding: 5px; /* Adjusted padding */
+    width: 30px; /* Adjusted size */
+    height: 30px; /* Adjusted size */
+    font-size: 0.8em; /* Adjusted font */
+    border-radius: 50%;
+    color: white;
+}
+
+.strip-action-buttons .edit {
+    background-color: #007bff;
+}
+.strip-action-buttons .edit:hover {
+    background-color: #0056b3;
+}
+
+.strip-action-buttons .delete {
+    background-color: var(--danger-color);
+}
+.strip-action-buttons .delete:hover {
+    background-color: var(--danger-hover);
+}
+
+/* Action Bar for Add New Entry and Filter */
+.action-bar {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 15px; /* Space between add button and filter controls */
+    justify-content: flex-start; /* Align items to the start */
+    align-items: center;
+    margin-bottom: 15px; /* Adjusted margin */
+    width: 100%;
+}
+
+.action-bar #add-new-job-entry-btn,
+.action-bar #open-filter-modal-btn {
+    flex-shrink: 0; /* Prevents buttons from shrinking */
+}
+
+
+/* Highlight New Entry Animation */
+@keyframes highlightNewEntry {
+    0% {
+        background-color: rgba(0, 123, 255, 0.2); /* Light blue highlight */
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+    }
+    100% {
+        background-color: var(--strip-bg-light); /* Changed to use strip background variable */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+body.dark-theme @keyframes highlightNewEntry {
+    0% {
+        background-color: rgba(56, 149, 255, 0.3); /* Slightly brighter blue for dark theme */
+        box-shadow: 0 0 15px rgba(56, 149, 255, 0.7);
+    }
+    100% {
+        background-color: var(--strip-bg-dark); /* Changed to use strip background variable */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.job-entry-strip.highlight-new-entry {
+    animation: highlightNewEntry 2s ease-out forwards;
+}
+
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Allows modal content to scroll if it exceeds screen height */
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+    justify-content: center;
+    align-items: center; /* Center horizontally and vertically */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    position: relative;
+    padding: var(--padding-base);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
+    max-height: 90vh; /* Make modal scrollable if content overflows */
+    overflow-y: auto; /* Enable vertical scrolling within the modal content */
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: var(--secondary-color);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--danger-color);
+    text-decoration: none;
+}
+
+/* Filter Modal Specific Styles */
+#filter-modal .form-group {
+    margin-bottom: 15px;
+}
+
+#filter-modal .button-group {
+    margin-top: 25px;
+}
+
+/* Removed all @media queries to force desktop view on all devices */
