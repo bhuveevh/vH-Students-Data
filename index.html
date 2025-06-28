@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VacancyHai Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-theme">
+    <header>
+        <div class="logo">VacancyHai</div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn icon-btn"><i class="fas fa-sun"></i></button>
+            <button id="header-create-new-file-btn" class="btn primary-btn"><i class="fas fa-plus"></i> New File</button>
+            <button id="header-download-btn" class="btn primary-btn" style="display: none;"><i class="fas fa-download"></i> Save File</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="main-menu-screen" class="screen active">
+            <h2>Welcome to VacancyHai Tool</h2>
+            <div class="button-group">
+                <button id="import-file-btn" class="btn large-btn primary-btn"><i class="fas fa-file-import"></i> Import VACANCY HAI FILE (vhf)</button>
+                <input type="file" id="import-file-input" accept=".vhf" style="display: none;">
+                
+                <div id="password-input-container" class="form-group" style="display: none;">
+                    <label for="imported-file-password">Enter Password:</label>
+                    <input type="password" id="imported-file-password" placeholder="Password for VacancyHai file">
+                    <button id="submit-imported-password-btn" class="btn primary-btn">Open File</button>
+                    <a href="#" id="forget-password-link" class="text-link" style="display: none;">Forget Password?</a>
+                </div>
+                <button id="update-file-btn" class="btn large-btn secondary-btn" style="display: none;"><i class="fas fa-sync-alt"></i> Update File</button>
+            </div>
+        </section>
+
+        <section id="password-details-screen" class="screen">
+            <h2>Set Your Master Password Details</h2>
+            <form id="password-details-form" class="app-form">
+                <div class="form-group">
+                    <label for="name">Your Name (Full):</label>
+                    <input type="text" id="name" placeholder="E.g., John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="birth-year">Your Birth Year (Last 2 digits):</label>
+                    <input type="text" id="birth-year" pattern="\d{2}" maxlength="2" placeholder="E.g., 98" required>
+                </div>
+                <div class="form-group">
+                    <label for="favorite-word">Your Favorite Word:</label>
+                    <input type="text" id="favorite-word" placeholder="E.g., Sunshine" required>
+                </div>
+                <div class="form-group">
+                    <label for="special-symbol">A Special Symbol (one character):</label>
+                    <input type="text" id="special-symbol" maxlength="1" placeholder="E.g., @" required>
+                </div>
+                <div class="button-group">
+                    <button type="button" id="generate-password-btn" class="btn primary-btn">Generate Password</button>
+                    <button type="button" id="back-to-main-from-password-details" class="btn secondary-btn">Back to Main Menu</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="display-password-screen" class="screen">
+            <h2>Your Master Password</h2>
+            <div class="password-display-box">
+                <p id="generated-password"></p>
+            </div>
+            <p class="warning-text">
+                <i class="fas fa-exclamation-triangle"></i>
+                **IMPORTANT:** Please copy and save this password securely. You will need it to open your VacancyHai file.
+                We do not store your password on our servers.
+            </p>
+            <button id="ok-to-student-form-btn" class="btn primary-btn">Continue to Job Entries</button>
+        </section>
+
+        <section id="student-details-screen" class="screen">
+            <h2>Job Application Entries</h2>
+            
+            <div class="action-bar">
+                <button id="add-new-job-entry-btn" class="btn primary-btn"><i class="fas fa-plus"></i> Add New Entry</button>
+                <button id="open-filter-modal-btn" class="btn secondary-btn"><i class="fas fa-filter"></i> Filter Entries</button>
+            </div>
+
+            <div id="job-entries-display-container">
+                <p id="no-entries-message" class="info-message" style="display: none;">No job entries yet. Click "Add New Entry" to start!</p>
+                </div>
+            <div class="button-group">
+                <button id="save-file-btn" class="btn success-btn"><i class="fas fa-save"></i> Save & Download File</button>
+                <button id="back-to-main-from-student-details" class="btn secondary-btn">Back to Main Menu</button>
+            </div>
+        </section>
+
+        <div id="job-entry-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-job-modal">&times;</span>
+                <h3 id="job-modal-title">Add New Job Application</h3>
+                <form id="job-entry-form" class="app-form">
+                    <div class="form-group">
+                        <label for="modal-job-title">Job Title:</label>
+                        <input type="text" id="modal-job-title" placeholder="e.g., Software Engineer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-organization">Organization:</label>
+                        <input type="text" id="modal-organization" placeholder="e.g., Google" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-applied-soon">Status:</label>
+                        <select id="modal-applied-soon">
+                            <option value="Applied">Applied</option>
+                            <option value="Interview Scheduled">Interview Scheduled</option>
+                            <option value="Interview Done">Interview Done</option>
+                            <option value="Offer Received">Offer Received</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-date">Date Applied/Updated:</label>
+                        <input type="date" id="modal-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-fee">Application Fee (if any):</label>
+                        <input type="number" id="modal-fee" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-registration-number">Registration Number:</label>
+                        <input type="text" id="modal-registration-number" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-application-number">Application Number:</label>
+                        <input type="text" id="modal-application-number" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-username">Login Username:</label>
+                        <input type="text" id="modal-username" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-password-job">Login Password:</label>
+                        <input type="text" id="modal-password-job" placeholder="Optional">
+                    </div>
+
+                    <div id="custom-fields-container">
+                        </div>
+                    <button type="button" id="add-custom-field-btn" class="btn secondary-btn" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i> Add Custom Field
+                    </button>
+                    <div class="button-group">
+                        <button type="button" id="save-job-entry-modal-btn" class="btn primary-btn">Save Entry</button>
+                        <button type="button" id="cancel-job-entry-modal-btn" class="btn secondary-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="filter-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-filter-modal">&times;</span>
+                <h3>Filter Job Entries</h3>
+                <form id="filter-form" class="app-form">
+                    <div class="form-group">
+                        <label for="filter-modal-job-title">Job Title:</label>
+                        <input type="text" id="filter-modal-job-title" placeholder="e.g., Software Engineer">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-modal-organization">Organization:</label>
+                        <input type="text" id="filter-modal-organization" placeholder="e.g., Google">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-modal-applied-soon">Status:</label>
+                        <select id="filter-modal-applied-soon">
+                            <option value="">Any Status</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Interview Scheduled">Interview Scheduled</option>
+                            <option value="Interview Done">Interview Done</option>
+                            <option value="Offer Received">Offer Received</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-modal-date">Date Applied/Updated (Exact):</label>
+                        <input type="date" id="filter-modal-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-modal-fee">Application Fee (Exact):</label>
+                        <input type="number" id="filter-modal-fee" placeholder="0" min="0">
+                    </div>
+                    <div class="button-group">
+                        <button type="button" id="filter-modal-apply-btn" class="btn primary-btn">Apply Filter</button>
+                        <button type="button" id="filter-modal-clear-btn" class="btn secondary-btn">Clear Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="password-structure-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-password-structure-modal">&times;</span>
+                <h3>Your Master Password Structure</h3>
+                <div id="password-structure-content" class="info-message">
+                    </div>
+                <button class="btn secondary-btn" id="close-structure-modal-btn">Close</button>
+            </div>
+        </div>
+
+        <div id="general-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-general-modal">&times;</span>
+                <p id="general-modal-message"></p>
+                <button class="btn primary-btn" onclick="hideGeneralModal()">OK</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
