@@ -1,4 +1,5 @@
-/* General Styles */
+/* General Styles (Previous content of :root, body, light-theme, dark-theme, scrollbar styles, header, logo, main, screen, h2, forms, input/select, custom-field-group, remove-custom-field-btn, btn, primary-btn, secondary-btn, success-btn, icon-btn, button-group, large-btn, text-link, password-display-box, warning-text, info-message, highlightNewEntry, modals, close-button, filter-modal-specific-styles are all the same as before. Only the media queries are changed/updated.) */
+
 :root {
     --light-bg: #f4f7f6;
     --light-text: #333;
@@ -966,19 +967,25 @@ body.dark-theme @keyframes highlightNewEntry {
 /* Mobile View (for screens smaller than 768px) */
 @media (max-width: 768px) {
     header {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row; /* Changed to row for header elements to stay in one line */
+        justify-content: space-between; /* Space out logo and actions */
+        align-items: center;
         padding: 10px;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        overflow-x: auto; /* Allow horizontal scroll if content is too wide, prefer to avoid */
     }
 
     .header-actions {
-        width: 100%;
-        display: flex;
-        justify-content: center;
+        display: flex; /* Ensure buttons are flexed */
+        gap: 5px; /* Small gap between buttons */
+        flex-shrink: 0; /* Prevent buttons from shrinking */
+        width: auto; /* Adjust width automatically */
     }
 
     .logo {
-        font-size: 1.5em; /* Smaller logo on mobile */
+        font-size: 1.4em; /* Smaller logo for mobile */
+        flex-shrink: 0; /* Prevent logo from shrinking */
+        margin-right: 10px; /* Space between logo and actions */
     }
 
     main {
@@ -1030,32 +1037,51 @@ body.dark-theme @keyframes highlightNewEntry {
     .job-entry-strip {
         padding: 8px 10px; /* Smaller padding for strips */
         min-height: 50px; /* Slightly smaller min height for strips */
+        /* Changed to column for overall structure, then manage inner rows */
+        flex-direction: column;
     }
 
-    .strip-top-row {
-        flex-direction: column; /* Stack serial and title */
-        align-items: flex-start;
-        margin-bottom: 3px; /* Reduced margin */
-        padding-bottom: 3px; /* Reduced padding */
+    /* New structure for strip content on mobile */
+    .job-entry-strip > div {
+        width: 100%; /* Ensure inner divs take full width */
+        box-sizing: border-box;
+    }
+
+    .strip-top-row { /* This now contains serial and action buttons */
+        display: flex;
+        justify-content: space-between; /* Space between serial and actions */
+        align-items: center;
+        margin-bottom: 5px; /* Space before title */
+        border-bottom: none; /* No border for this row as title is separate */
+        padding-bottom: 0; /* No padding */
     }
 
     .strip-serial-no {
         width: 25px; /* Smaller serial number circle */
         height: 25px;
         font-size: 0.8em;
-        margin-bottom: 5px; /* Add margin when stacked */
-        margin-right: 0;
+        margin-right: 0; /* No margin here, as it's handled by space-between */
+        flex-shrink: 0;
     }
 
     .strip-title {
-        font-size: 1em; /* Smaller title font */
+        font-size: 1em; /* Title in its own line below */
+        font-weight: bold;
+        margin-bottom: 5px; /* Space between title and details */
+        color: var(--primary-color);
+        white-space: normal; /* Allow title to wrap */
+        overflow: visible; /* Show full title */
+        text-overflow: clip; /* Prevent ellipsis */
+        flex-grow: 0; /* Do not grow */
+        width: 100%; /* Full width */
     }
 
     .strip-action-buttons {
-        position: static; /* Stack action buttons on mobile */
-        margin-top: 5px; /* Space from title */
-        justify-content: flex-end; /* Align actions to the right */
-        width: 100%;
+        position: static; /* Remove absolute positioning */
+        display: flex;
+        gap: 5px; /* Space between buttons */
+        flex-shrink: 0; /* Prevent from shrinking */
+        margin-top: 0; /* Remove top margin */
     }
 
     .strip-action-buttons .btn {
@@ -1065,33 +1091,43 @@ body.dark-theme @keyframes highlightNewEntry {
         padding: 4px;
     }
 
-    .strip-bottom-row {
-        gap: 3px; /* Smaller gap between detail boxes */
+    .strip-bottom-row { /* This is the 3rd row for detail boxes */
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: 5px; /* Smaller gap between detail boxes */
         font-size: 0.8em; /* Smaller font for details */
+        justify-content: flex-start; /* Align details to the start */
+        margin-top: 0; /* Remove any previous margin */
     }
 
     .strip-detail-box {
-        min-width: 80px; /* Smaller min-width for detail boxes */
+        min-width: 45%; /* Approximately two boxes per row */
         flex: 1 1 45%; /* Allow two items per row, with wrap */
+        max-width: 48%; /* Max width for two columns */
     }
 
     .strip-detail-box h4 {
         padding: 4px 6px; /* Smaller padding for detail h4 */
-        font-size: 0.85em;
-        min-height: 20px; /* Adjusted height for detail h4 */
-        height: 20px; /* Adjusted height for detail h4 */
+        font-size: 0.8em; /* Even smaller text in boxes */
+        min-height: 20px;
+        height: 20px;
     }
 
     .action-bar {
-        flex-direction: column;
-        align-items: stretch; /* Stretch buttons to full width */
+        flex-direction: row; /* Keep in a row */
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: space-between; /* Space out the two buttons */
+        align-items: center;
         gap: 10px;
         margin-bottom: 10px;
     }
 
-    .action-bar .btn {
-        width: 100%;
-        max-width: none;
+    .action-bar #add-new-job-entry-btn,
+    .action-bar #open-filter-modal-btn {
+        flex-grow: 1; /* Allow buttons to grow to fill space */
+        max-width: 48%; /* Max width for two buttons per row */
+        font-size: 0.9em;
+        padding: 10px 15px;
     }
 
     .modal-content {
