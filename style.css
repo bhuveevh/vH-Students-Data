@@ -19,12 +19,12 @@
     --dark-scrollbar-thumb-hover: #777;
     --dark-scrollbar-track: #3a3f47;
 
-    --primary-color: #002b47; /* Updated Primary Color */
+    --primary-color: #4a90ca; /* Updated Primary Color */
     --primary-hover: #003d66; /* Darker shade for hover */
     --secondary-color: #6c757d; /* Gray */
     --secondary-hover: #5a6268;
-    --success-color: #28a745;
-    --success-hover: #218838;
+    --success-color: #396443;
+    --success-hover: #549362;
     --danger-color: #dc3545;
     --danger-hover: #c82333;
 
@@ -414,7 +414,7 @@ body.dark-theme .custom-field-group {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
     gap: 15px; /* Space between buttons */
-    margin-top: 20px;
+    margin-top: 0px;
     justify-content: center;
 }
 
@@ -583,7 +583,7 @@ body.dark-theme .job-entry-strip:hover {
     display: flex;
     align-items: center;
     margin-bottom: 5px; /* Adjusted margin */
-    border-bottom: 1px solid var(--light-border); /* Separator */
+    border-bottom: 0px solid var(--light-border); /* Separator */
     padding-bottom: 5px; /* Adjusted padding */
 }
 
@@ -720,7 +720,7 @@ body.dark-theme .status-Pending h4 { background-color: #e0a800; color: white; bo
     display: flex;
     flex-wrap: wrap; /* Allows wrapping on smaller screens */
     gap: 15px; /* Space between add button and filter controls */
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: center;
     align-items: center;
     margin-bottom: 15px; /* Adjusted margin */
     width: 100%;
@@ -870,7 +870,7 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .button-group .btn {
-        max-width: 200px; /* Adjusted max-width for tablet buttons */
+        max-width: 300px; /* Adjusted max-width for tablet buttons */
         flex-grow: 1;
         font-size: 0.95em;
         padding: 10px 20px;
@@ -923,16 +923,12 @@ body.dark-theme @keyframes highlightNewEntry {
         gap: 5px;
     }
 
-    .strip-action-buttons .btn {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8em;
-        padding: 5px;
+    
     }
 
     .strip-bottom-row {
         gap: 5px;
-        font-size: 0.9em;
+        font-size: 1em;
         justify-content: flex-start; /* Align to start */
     }
 
@@ -951,9 +947,9 @@ body.dark-theme @keyframes highlightNewEntry {
     .action-bar {
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: center;
         gap: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 0px;
     }
 
     .modal-content {
@@ -1067,7 +1063,7 @@ body.dark-theme @keyframes highlightNewEntry {
     .strip-title {
         font-size: 1em; /* Title in its own line below */
         font-weight: bold;
-        margin-bottom: 5px; /* Space between title and details */
+        margin-left: 5px; /* Space between title and details */
         color: var(--primary-color);
         white-space: normal; /* Allow title to wrap */
         overflow: visible; /* Show full title */
