@@ -401,13 +401,13 @@ body.dark-theme .custom-field-group {
 
 .icon-btn {
     padding: 10px; /* Smaller padding for icon-only buttons */
-    width: 40px; /* Fixed width for circular effect */
-    height: 40px; /* Fixed height */
+    width: 25px; /* Fixed width for circular effect */
+    height: 25px; /* Fixed height */
     border-radius: 50%; /* Make it circular */
 }
 
 .icon-btn i {
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 .button-group {
