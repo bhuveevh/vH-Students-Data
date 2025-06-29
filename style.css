@@ -1128,6 +1128,7 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .modal-content {
+        height: 80%;
         width: 95%; /* Wider modal on mobile */
         padding: 15px;
     }
