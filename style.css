@@ -841,7 +841,7 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .logo {
-        font-size: 1.7em; /* Slightly smaller logo on tablet */
+        font-size: 1em; /* Slightly smaller logo on tablet */
     }
 
     main {
