@@ -953,7 +953,7 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .modal-content {
-        height: 90%;
+        height: 60%;
         width: 80%;
         max-width: 600px;
         padding: 20px;
