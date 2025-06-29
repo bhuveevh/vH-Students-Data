@@ -419,6 +419,7 @@ body.dark-theme .custom-field-group {
 }
 
 .button-group .btn {
+    margin-top: 5px;
     flex-grow: 1; /* Allow buttons to grow */
     max-width: 250px; /* Limit max width for flex growth */
 }
