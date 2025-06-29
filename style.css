@@ -979,7 +979,7 @@ body.dark-theme @keyframes highlightNewEntry {
     }
 
     .logo {
-        font-size: 1.4em; /* Smaller logo for mobile */
+        font-size: 1.1em; /* Smaller logo for mobile */
         flex-shrink: 0; /* Prevent logo from shrinking */
         margin-right: 10px; /* Space between logo and actions */
     }
