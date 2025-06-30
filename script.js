@@ -9,7 +9,7 @@ const headerDownloadBtn = document.getElementById('header-download-btn');
 
 // Main Menu Elements
 const importFileBtn = document.getElementById('import-file-btn');
-const importFileInput = document.getElementById('import-file-input');
+const importFileInput = document.getElementById('import-file-input'); // Kept for reference but not directly used for file selection anymore
 const updateFileBtn = document.getElementById('update-file-btn');
 const passwordInputContainer = document.getElementById('password-input-container');
 const importedFilePasswordInput = document.getElementById('imported-file-password');
@@ -92,6 +92,7 @@ let currentFileData = null; // Stores parsed data from opened .vhf file (include
 let editingJobEntryIndex = -1; // -1 for new entry, index for editing existing
 let lastAddedEntryIndex = -1; // To highlight newly added entry
 let currentFilterCriteria = {}; // Stores the active filter criteria
+let currentFileHandle = null; // Stores the FileSystemFileHandle for direct saving/opening
 
 
 // --- Utility Functions ---
@@ -375,7 +376,10 @@ function updateHeaderButtons() {
     if (currentScreenId === 'main-menu-screen') {
         headerCreateNewFileBtn.style.display = 'inline-flex';
     } else if (currentScreenId === 'student-details-screen') {
-        headerDownloadBtn.style.display = 'inline-flex';
+        // Only show download/save button if a file is currently loaded (or being created)
+        if (currentFileData) { // Check if there's data to save
+            headerDownloadBtn.style.display = 'inline-flex';
+        }
     }
 
     // Update theme toggle icon
@@ -404,81 +408,131 @@ headerCreateNewFileBtn.addEventListener('click', () => {
     birthYearInput.value = '';
     favoriteWordInput.value = '';
     specialSymbolInput.value = '';
+    currentFileHandle = null; // No file handle for new file until saved
 });
 
 headerDownloadBtn.addEventListener('click', () => {
     if (currentScreenId === 'student-details-screen') {
-        saveFileBtn.click();
+        saveFileBtn.click(); // headerDownloadBtn now triggers saveFileBtn's new logic
     }
 });
 
-// Main Menu Buttons
-importFileBtn.addEventListener('click', () => {
-    importFileInput.click();
-});
+// Main Menu Buttons - MODIFIED FOR FILE SYSTEM ACCESS API
+importFileBtn.addEventListener('click', async () => {
+    try {
+        // Use File System Access API to open file picker
+        [currentFileHandle] = await window.showOpenFilePicker({
+            types: [{
+                description: 'VACANCY HAI FILE',
+                accept: {
+                    'application/vnd.vhf': ['.vhf'], // Assuming a custom MIME type
+                    'text/plain': ['.vhf'], // Fallback for simple text files
+                },
+            }],
+            excludeAcceptAllOption: true,
+            multiple: false,
+        });
 
-importFileInput.addEventListener('change', () => {
-    const file = importFileInput.files[0];
-    if (file) {
-        passwordInputContainer.style.display = 'block';
-        importedFilePasswordInput.value = '';
-        updateFileBtn.style.display = 'inline-block';
-        importFileBtn.style.display = 'none';
-        // Show Forget Password link when password input is shown
-        forgetPasswordLink.style.display = 'block'; 
-    } else {
-        passwordInputContainer.style.display = 'none';
-        updateFileBtn.style.display = 'none';
-        importFileBtn.style.display = 'inline-block';
-        // Hide Forget Password link if no file selected
-        forgetPasswordLink.style.display = 'none';
-    }
-});
-
-submitImpoertedPasswordBtn.addEventListener('click', async () => {
-    const file = importFileInput.files[0];
-    const password = importedFilePasswordInput.value;
-
-    if (!file || !password) {
-        showModal("Please select a file and enter your password.");
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-        const encryptedContent = e.target.result;
-        try {
-            const decryptedContent = await decryptData(encryptedContent, password);
-            const parsedData = parseData(decryptedContent);
-
-            const enteredPasswordHash = await hashString(password);
-            if (enteredPasswordHash !== parsedData.masterPasswordHash) {
-                showModal("Incorrect password. Please try again.");
-                importedFilePasswordInput.value = '';
-                return;
-            }
-
-            currentFileData = parsedData;
-            masterPassword = password; // Store the correctly entered master password
-
-            renderJobEntries(currentFileData.jobEntries); // Initial render after loading
-            showScreen('student-details-screen');
-            showModal("File opened successfully!");
-
-            // Reset main menu UI after successful open
-            importFileInput.value = '';
+        if (currentFileHandle) {
+            // Once a file is selected, show the password input
+            passwordInputContainer.style.display = 'block';
+            importedFilePasswordInput.value = '';
+            updateFileBtn.style.display = 'inline-block';
+            importFileBtn.style.display = 'none'; // Hide import button after file selected
+            forgetPasswordLink.style.display = 'block';
+            showModal("Please enter the password for this file.");
+        } else {
+            // If user cancels file picker
             passwordInputContainer.style.display = 'none';
             updateFileBtn.style.display = 'none';
             importFileBtn.style.display = 'inline-block';
             forgetPasswordLink.style.display = 'none';
-            
-        } catch (error) {
-            console.error("File import error:", error);
-            showModal("Failed to open file. " + error.message);
-            importedFilePasswordInput.value = '';
         }
-    };
-    reader.readAsText(file);
+    } catch (error) {
+        // Handle cases where user cancels the picker or other errors
+        if (error.name === 'AbortError') {
+            // User cancelled the operation
+            console.log('File selection cancelled.');
+        } else {
+            console.error('Error opening file:', error);
+            showModal('Failed to open file: ' + error.message);
+        }
+        currentFileHandle = null; // Clear handle on error or cancellation
+        passwordInputContainer.style.display = 'none';
+        updateFileBtn.style.display = 'none';
+        importFileBtn.style.display = 'inline-block';
+        forgetPasswordLink.style.display = 'none';
+    }
+});
+
+// Removed the old importFileInput.addEventListener('change', ...) as its logic is now in importFileBtn's click listener
+
+submitImpoertedPasswordBtn.addEventListener('click', async () => {
+    if (!currentFileHandle) { // Use currentFileHandle instead of importFileInput
+        showModal("No file selected. Please select a file first.");
+        return;
+    }
+    const password = importedFilePasswordInput.value;
+
+    if (!password) {
+        showModal("Please enter your password.");
+        return;
+    }
+
+    try {
+        // Request read permission (if not already granted or persisted)
+        const permissionStatus = await currentFileHandle.queryPermission({ mode: 'read' });
+        if (permissionStatus === 'denied') {
+            showModal('Read permission denied for this file. Cannot open.');
+            return;
+        }
+
+        const file = await currentFileHandle.getFile(); // Get the File object from the handle
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            const encryptedContent = e.target.result;
+            try {
+                const decryptedContent = await decryptData(encryptedContent, password);
+                const parsedData = parseData(decryptedContent);
+
+                const enteredPasswordHash = await hashString(password);
+                if (enteredPasswordHash !== parsedData.masterPasswordHash) {
+                    showModal("Incorrect password. Please try again.");
+                    importedFilePasswordInput.value = '';
+                    return;
+                }
+
+                currentFileData = parsedData;
+                masterPassword = password; // Store the correctly entered master password
+
+                renderJobEntries(currentFileData.jobEntries); // Initial render after loading
+                showScreen('student-details-screen');
+                showModal("File opened successfully!");
+
+                // Reset main menu UI after successful open
+                importedFilePasswordInput.value = ''; // Clear password field
+                passwordInputContainer.style.display = 'none';
+                updateFileBtn.style.display = 'none';
+                importFileBtn.style.display = 'inline-block';
+                forgetPasswordLink.style.display = 'none';
+                
+            } catch (error) {
+                console.error("File import error:", error);
+                showModal("Failed to open file. " + error.message);
+                importedFilePasswordInput.value = '';
+                currentFileHandle = null; // Clear handle on decryption error
+                updateHeaderButtons(); // Re-evaluate header buttons
+            }
+        };
+        reader.readAsText(file);
+    } catch (error) {
+        console.error("Error accessing file handle:", error);
+        showModal("Error accessing selected file. " + error.message);
+        importedFilePasswordInput.value = '';
+        currentFileHandle = null; // Clear handle on access error
+        updateHeaderButtons(); // Re-evaluate header buttons
+    }
 });
 
 updateFileBtn.addEventListener('click', () => {
@@ -514,6 +568,7 @@ generatePasswordBtn.addEventListener('click', () => {
 backToMainFromPasswordDetailsBtn.addEventListener('click', () => {
     showScreen('main-menu-screen');
     masterPassword = '';
+    currentFileHandle = null; // Clear file handle when going back to main menu
     // Clear input fields when going back
     nameInput.value = '';
     birthYearInput.value = '';
@@ -833,6 +888,7 @@ function deleteJobEntry(index) {
 }
 
 
+// MODIFIED saveFileBtn for direct saving using FileSystemFileHandle
 saveFileBtn.addEventListener('click', async () => {
     if (!masterPassword) {
         showModal("Error: Master password not set. Please create a new file or open an existing one.");
@@ -843,6 +899,7 @@ saveFileBtn.addEventListener('click', async () => {
         return;
     }
 
+    // Ensure master password hash is updated if it's a new file or changed
     if (!currentFileData.masterPasswordHash || currentFileData.masterPasswordHash !== await hashString(masterPassword)) {
         currentFileData.masterPasswordHash = await hashString(masterPassword);
     }
@@ -850,25 +907,58 @@ saveFileBtn.addEventListener('click', async () => {
     const serializedData = serializeData(currentFileData);
     const encryptedData = await encryptData(serializedData, masterPassword);
 
-    const blob = new Blob([encryptedData], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `my_job_data_${Date.now()}.vacancyhai.vhf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+        if (!currentFileHandle) {
+            // If no file is currently opened (e.g., it's a new file), prompt to save as
+            currentFileHandle = await window.showSaveFilePicker({
+                types: [{
+                    description: 'VACANCY HAI FILE',
+                    accept: {
+                        'application/vnd.vhf': ['.vhf'],
+                        'text/plain': ['.vhf'],
+                    },
+                }],
+                suggestedName: `my_job_data_${Date.now()}.vhf`,
+            });
+        }
 
-    showModal("File saved and downloaded successfully!");
+        // Request write permission for the file handle
+        const permissionStatus = await currentFileHandle.queryPermission({ mode: 'readwrite' });
+        if (permissionStatus === 'denied') {
+            showModal('Write permission denied for this file. Cannot save.');
+            return;
+        } else if (permissionStatus === 'prompt') {
+            // If permission is 'prompt', request it
+            const newPermissionStatus = await currentFileHandle.requestPermission({ mode: 'readwrite' });
+            if (newPermissionStatus !== 'granted') {
+                showModal('Write permission not granted. Cannot save file directly.');
+                return;
+            }
+        }
+
+        const writable = await currentFileHandle.createWritable();
+        await writable.write(encryptedData);
+        await writable.close();
+
+        showModal("File saved successfully!");
+    } catch (error) {
+        console.error('Error saving file:', error);
+        if (error.name === 'AbortError') {
+            // User cancelled the save file dialog
+            showModal('File save cancelled.');
+        } else {
+            showModal('Failed to save file: ' + error.message);
+        }
+    }
 });
 
 backToMainFromStudentDetailsBtn.addEventListener('click', () => {
     showScreen('main-menu-screen');
     masterPassword = '';
     currentFileData = null;
+    currentFileHandle = null; // Clear the file handle when returning to main menu
     jobEntriesDisplayContainer.innerHTML = '';
-    importFileInput.value = '';
+    importedFilePasswordInput.value = ''; // Clear password field
     passwordInputContainer.style.display = 'none';
     updateFileBtn.style.display = 'none';
     importFileBtn.style.display = 'inline-block';
