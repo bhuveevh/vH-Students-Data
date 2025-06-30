@@ -419,6 +419,7 @@ headerDownloadBtn.addEventListener('click', () => {
 
 // Main Menu Buttons - MODIFIED FOR FILE SYSTEM ACCESS API
 importFileBtn.addEventListener('click', async () => {
+    console.log('Import button clicked. Attempting to open file picker...'); // यह लाइन जोड़ें
     try {
         // Use File System Access API to open file picker
         [currentFileHandle] = await window.showOpenFilePicker({
